@@ -1,22 +1,23 @@
 package javabrains.restapi.messenger.resources;
 
+import java.util.List;
+
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
+import javabrains.restapi.messenger.model.Message;
+import javabrains.restapi.messenger.service.MessageService;
+
 @Path("/messages")
 public class MessageResource {
+	MessageService messageService= new MessageService();
 	@GET
-	@Produces(MediaType.TEXT_PLAIN)
-	// Produces will tell jersey that at what format this class is going to send data. MediaType is an annotation that contains all possible formats.
-	public String getMessages()
+	@Produces(MediaType.APPLICATION_XML)
+	public List<Message> getMessages()
 	{
-		return "hello world";
+		return messageService.getAllMessages();
 	}
 
 }
-/* 
-We need to inform jersey that this class is here to be looked upon. 
-For this, in web.xml, in init-param's param-value, we enter the name of the packages which we want that jersey should search in order to look for that resource 
-*/
