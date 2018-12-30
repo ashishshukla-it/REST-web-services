@@ -3,8 +3,7 @@ package javabrains.restapi.messenger.model;
 import java.util.Date;
 
 import javax.xml.bind.annotation.XmlRootElement;
-
-// This gives idea to jax b that this is the root element. Then jax b creates xml tags out of these variables. 
+ 
 @XmlRootElement
 public class Message {
 private long id;
@@ -12,9 +11,6 @@ private String message;
 private Date created;
 private String author;
 
-/* This no argument constructor is must to be created.
- * When we are dealing with xml or json conversion, we need this constructor to enable frameworks to create new instances  
- */
 public Message()
 {}
 
