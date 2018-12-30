@@ -11,6 +11,7 @@ import javabrains.restapi.messenger.model.Message;
 import javabrains.restapi.messenger.service.MessageService;
 
 @Path("/messages")
+// This is class level annotation
 public class MessageResource {
 	MessageService messageService= new MessageService();
 	@GET
@@ -18,6 +19,15 @@ public class MessageResource {
 	public List<Message> getMessages()
 	{
 		return messageService.getAllMessages();
+	}
+	
+	@GET
+	@Path("/test")
+	// This is method level annotation. /test is to be followed by messages.
+	@Produces(MediaType.TEXT_PLAIN)
+	public String test()
+	{
+		return "test";
 	}
 
 }
