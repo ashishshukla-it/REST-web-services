@@ -11,7 +11,6 @@ import javabrains.restapi.messenger.model.Message;
 import javabrains.restapi.messenger.service.MessageService;
 
 @Path("/messages")
-// This is class level annotation
 public class MessageResource {
 	MessageService messageService= new MessageService();
 	@GET
@@ -22,8 +21,10 @@ public class MessageResource {
 	}
 	
 	@GET
-	@Path("/test")
-	// This is method level annotation. /test is to be followed by messages.
+	@Path("/{test}")
+	/* Now since test is in {}, it will be treated as variable. So whatever follows /messages, will work. 
+	This would have not worked in previous case where /test was hard coded.
+	*/
 	@Produces(MediaType.TEXT_PLAIN)
 	public String test()
 	{
