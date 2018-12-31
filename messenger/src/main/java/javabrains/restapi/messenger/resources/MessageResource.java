@@ -23,13 +23,13 @@ public class MessageResource {
 	
 	@GET
 	@Path("/{messageId}")
-	@Produces(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_XML)
 	/*
-	 * Whatever is in path, we are passing it to display.
+	 * 
 	 */
-	public String test(@PathParam("messageId") String display)
+	public Message test(@PathParam("messageId") long id)
 	{
-		return "Got path param " + display;
+		return messageService.getMessage(id);
 	}
 
 }
