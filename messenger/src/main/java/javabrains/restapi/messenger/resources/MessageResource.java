@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
@@ -21,14 +22,14 @@ public class MessageResource {
 	}
 	
 	@GET
-	@Path("/{test}")
-	/* Now since test is in {}, it will be treated as variable. So whatever follows /messages, will work. 
-	This would have not worked in previous case where /test was hard coded.
-	*/
+	@Path("/{messageId}")
 	@Produces(MediaType.TEXT_PLAIN)
-	public String test()
+	/*
+	 * Whatever is in path, we are passing it to display.
+	 */
+	public String test(@PathParam("messageId") String display)
 	{
-		return "test";
+		return "Got path param " + display;
 	}
 
 }
