@@ -10,6 +10,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import javabrains.restapi.messenger.model.Message;
@@ -20,9 +21,18 @@ public class MessageResource {
 	MessageService messageService= new MessageService();
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getMessages()
+	/*Anything given as query parameter in url will trigger this getMessages method because there is no mapping.
+	 * But when we enter @QueryParam, jersey starts considering it. 
+	 */
+	public List<Message> getMessages(@QueryParam("year") int year)
 	{
-		return messageService.getAllMessages();
+		if(year>0)
+		{
+			return messageService.getMessageForYear(year);
+		}
+		
+		else
+			return messageService.getAllMessages();
 	}
 	
 	@POST

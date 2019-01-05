@@ -1,6 +1,7 @@
 package javabrains.restapi.messenger.service;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import javabrains.restapi.messenger.database.DatabaseClass;
@@ -49,6 +50,21 @@ public class MessageService {
 		return messages.remove(id);
 	}
 	
-	
+	public List<Message> getMessageForYear(int year)
+	{
+		List<Message> messageForYear=new ArrayList<>();
+		// values() returns a collection view containing all the values of the map.
+		Calendar cal=Calendar.getInstance();
+		// Since Calendar here is abstract class, we cannot create its constructor, so we have to use getInstance()
+		for(Message message:messages.values())
+		{
+			cal.setTime(message.getCreated());
+			if(cal.get(Calendar.YEAR)==year)
+			{
+				messageForYear.add(message);
+			}
+		}
+	return messageForYear;
+	}
 
 }
