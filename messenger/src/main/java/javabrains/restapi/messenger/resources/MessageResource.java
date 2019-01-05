@@ -21,9 +21,6 @@ public class MessageResource {
 	MessageService messageService= new MessageService();
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	/*Anything given as query parameter in url will trigger this getMessages method because there is no mapping.
-	 * But when we enter @QueryParam, jersey starts considering it. 
-	 */
 	public List<Message> getMessages(@QueryParam("year") int year,
 			                         @QueryParam("start") int start,
 			                         @QueryParam("size") int size)

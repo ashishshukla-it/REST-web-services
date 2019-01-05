@@ -69,8 +69,8 @@ public class MessageService {
 	
 	public List<Message> getAllMessagesPaginated(int start, int size)
 	{
-		List<Message> list=new ArrayList<Message>(messages.values());
-		return list.subList(start,start+size);
+		List<Message> paginatedlist=new ArrayList<Message>(messages.values());
+		return paginatedlist.subList(start,start+size);
 	}
 
 }
