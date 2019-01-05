@@ -24,13 +24,19 @@ public class MessageResource {
 	/*Anything given as query parameter in url will trigger this getMessages method because there is no mapping.
 	 * But when we enter @QueryParam, jersey starts considering it. 
 	 */
-	public List<Message> getMessages(@QueryParam("year") int year)
+	public List<Message> getMessages(@QueryParam("year") int year,
+			                         @QueryParam("start") int start,
+			                         @QueryParam("size") int size)
 	{
 		if(year>0)
 		{
 			return messageService.getMessageForYear(year);
 		}
-		
+		// Because of this =0, getAllMessages() will never be called so it should not be used.
+		if(start >=0 && size >=0)
+		{
+			return messageService.getAllMessagesPaginated(start, size);
+		}
 		else
 			return messageService.getAllMessages();
 	}
