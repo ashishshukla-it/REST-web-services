@@ -1,7 +1,9 @@
 package javabrains.restapi.messenger.resources;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.CookieParam;
 import javax.ws.rs.GET;
+import javax.ws.rs.HeaderParam;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -19,9 +21,13 @@ public class InjectDemoResource
 	 * Just like QueryParam, there is MatrixParam. 
 	 * In this, after url, in place of ? we use ;
 	 */
-	public String getParamUsingAnnotations(@MatrixParam("param") String matrixParam)
+	public String getParamUsingAnnotations(@MatrixParam("param") String matrixParam,
+			                               @HeaderParam("header") String header,
+			                               @CookieParam("cookieName") String cookie)
 	{
-		return "MatrixParam " + matrixParam;
+		// header param can be used to get metadata such as authentication token etc.
+		// @FormParam is also there which can be used to capture data entered through html forms
+		return "MatrixParam " + matrixParam + " HeaderParam " + header + " CookieParam " + cookie;
 	}
 
 }
