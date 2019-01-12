@@ -2,6 +2,7 @@ package javabrains.restapi.messenger.resources;
 
 import java.util.List;
 
+import javax.ws.rs.BeanParam;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -14,6 +15,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 import javabrains.restapi.messenger.model.Message;
+import javabrains.restapi.messenger.resources.beans.MessageFilterBean;
 import javabrains.restapi.messenger.service.MessageService;
 
 @Path("/messages")
@@ -21,18 +23,19 @@ public class MessageResource {
 	MessageService messageService= new MessageService();
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	public List<Message> getMessages(@QueryParam("year") int year,
-			                         @QueryParam("start") int start,
-			                         @QueryParam("size") int size)
+	/* We don't want to use so many annotations. So for that, we have BeanParam.
+       We create a new bean. In that we describe all the annotations to be used and then we call BeanParam in our resources.
+    */
+	public List<Message> getMessages(@BeanParam MessageFilterBean filterBean)
 	{
-		if(year>0)
+		if(filterBean.getYear()>0)
 		{
-			return messageService.getMessageForYear(year);
+			return messageService.getMessageForYear(filterBean.getYear());
 		}
 		// Because of this =0, getAllMessages() will never be called so it should not be used.
-		if(start >=0 && size >=0)
+		if(filterBean.getStart() >=0 && filterBean.getSize() >=0)
 		{
-			return messageService.getAllMessagesPaginated(start, size);
+			return messageService.getAllMessagesPaginated(filterBean.getStart(), filterBean.getSize());
 		}
 		else
 			return messageService.getAllMessages();
