@@ -74,5 +74,12 @@ public class MessageResource {
 	{
 		return messageService.getMessage(id);
 	}
+	
+	// We don't have to mention http method name here
+	@Path("/{messageId}/comments")
+	public CommentResource getCommentResource()
+	{
+		return new CommentResource();
+	}
 
 }
