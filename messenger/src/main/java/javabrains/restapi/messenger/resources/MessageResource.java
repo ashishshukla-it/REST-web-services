@@ -13,6 +13,8 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import javabrains.restapi.messenger.model.Message;
 import javabrains.restapi.messenger.resources.beans.MessageFilterBean;
@@ -44,9 +46,15 @@ public class MessageResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Message addMessage(Message message)
+	/* Right now for all the successful post requests, status is 200. 
+	 * It should be 204 which denotes successful as well as created
+	 */
+	public Response addMessage(Message message)
 	{
-		return messageService.addMessage(message);
+		Message newMessage= messageService.addMessage(message);
+		return Response.status(Status.CREATED)
+				       .entity(newMessage)
+				       .build();
 	}
 	
 	@PUT

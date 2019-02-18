@@ -1,8 +1,11 @@
 package javabrains.restapi.messenger.model;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
  
 @XmlRootElement
 public class Message {
@@ -10,6 +13,7 @@ private long id;
 private String message;
 private Date created;
 private String author;
+private Map<Long,Comment> comments=new HashMap();
 
 public Message()
 {}
@@ -47,5 +51,12 @@ public void setAuthor(String author) {
 	this.author = author;
 }
 
-
+@XmlTransient
+// We don't want comments to be displayed of that message whenever a message is displayed. So we use XmlTransient.
+public Map<Long, Comment> getComments(){
+	return comments;
+}
+public void setComments(Map<Long,Comment> comments) {
+	this.comments=comments;
+}
 }
