@@ -1,5 +1,7 @@
 package javabrains.restapi.messenger.resources;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.List;
 
 import javax.ws.rs.BeanParam;
@@ -12,9 +14,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
+import javax.ws.rs.core.UriInfo;
 
 import javabrains.restapi.messenger.model.Message;
 import javabrains.restapi.messenger.resources.beans.MessageFilterBean;
@@ -49,10 +53,13 @@ public class MessageResource {
 	/* Right now for all the successful post requests, status is 200. 
 	 * It should be 204 which denotes successful as well as created
 	 */
-	public Response addMessage(Message message)
+	public Response addMessage(Message message, @Context UriInfo uriInfo) throws URISyntaxException
 	{
 		Message newMessage= messageService.addMessage(message);
-		return Response.status(Status.CREATED)
+		String newId=String.valueOf(message.getId()); 
+		URI uri=uriInfo.getAbsolutePathBuilder().path(newId).build();
+		// We use created when we want path back in response where new add has successfully taken place.
+		  return Response.created(uri)
 				       .entity(newMessage)
 				       .build();
 	}
