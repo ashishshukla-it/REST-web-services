@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import javabrains.restapi.messenger.database.DatabaseClass;
+import javabrains.restapi.messenger.exception.DataNotFoundException;
 import javabrains.restapi.messenger.model.Message;
 
 public class MessageService {
@@ -23,7 +24,11 @@ public class MessageService {
 	
 	public Message getMessage(long id)
 	{
-		return messages.get(id);
+		Message message= messages.get(id);
+		if(message==null)
+			throw new DataNotFoundException("Message with id "+id+ " not found");
+		else 
+			return message;
 		
 	}
 	
