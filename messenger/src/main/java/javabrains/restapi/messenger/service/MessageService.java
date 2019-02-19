@@ -24,6 +24,18 @@ public class MessageService {
 	
 	public Message getMessage(long id)
 	{
+		/*
+		 * But there is one problem. We don't want to show html response for exception as we can see in previous output.
+		 * This has happened because we haven't handled it.
+		 * MessageService throws this exception to messageResource and that also doesn't catch this exception.
+		 * It is then thrown to jax rs which also does not handle it.
+		 * So ultimately it gets thrown to tomcat and it handles it in this way.
+		 * Now we don't want exception to reach till tomcat and want to return json response of it.
+		 * First we will create json response and then we will map it to exception.
+		 * 
+		 * In new implementation, exception reaches jax rs.
+		 * jax rs looks for all @Providers and then it finds DataNotFoundExceptionMapper to handle it.
+		 */
 		Message message= messages.get(id);
 		if(message==null)
 			throw new DataNotFoundException("Message with id "+id+ " not found");
