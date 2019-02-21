@@ -27,11 +27,9 @@ import javabrains.restapi.messenger.service.MessageService;
 @Path("/messages")
 public class MessageResource {
 	MessageService messageService= new MessageService();
+	
 	@GET
 	@Produces(MediaType.APPLICATION_JSON)
-	/* We don't want to use so many annotations. So for that, we have BeanParam.
-       We create a new bean. In that we describe all the annotations to be used and then we call BeanParam in our resources.
-    */
 	public List<Message> getMessages(@BeanParam MessageFilterBean filterBean)
 	{
 		if(filterBean.getYear()>0)
@@ -50,9 +48,6 @@ public class MessageResource {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	/* Right now for all the successful post requests, status is 200. 
-	 * It should be 204 which denotes successful as well as created
-	 */
 	public Response addMessage(Message message, @Context UriInfo uriInfo) throws URISyntaxException
 	{
 		Message newMessage= messageService.addMessage(message);
@@ -85,9 +80,17 @@ public class MessageResource {
 	@GET
 	@Path("/{messageId}")
 	@Produces(MediaType.APPLICATION_JSON)
-	public Message test(@PathParam("messageId") long id)
-	{
-		return messageService.getMessage(id);
+	public Message getMessage(@PathParam("messageId") long id, @Context UriInfo uriInfo) {
+	
+		Message message= messageService.getMessage(id);
+		String uri=uriInfo.getBaseUriBuilder()                       // https:localhost:8080/messenger/webapi
+							  .path(MessageResource.class)           // /messages
+							  .path(Long.toString(message.getId()))  // /{messageId}                            
+							  .build()
+							  .toString();
+		
+				message.addLink(uri, "self");
+				return messageService.getMessage(id);
 	}
 	
 	// We don't have to mention http method name here
