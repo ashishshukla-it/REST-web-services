@@ -81,16 +81,30 @@ public class MessageResource {
 	@Path("/{messageId}")
 	@Produces(MediaType.APPLICATION_JSON)
 	public Message getMessage(@PathParam("messageId") long id, @Context UriInfo uriInfo) {
-	
 		Message message= messageService.getMessage(id);
-		String uri=uriInfo.getBaseUriBuilder()                       // https:localhost:8080/messenger/webapi
-							  .path(MessageResource.class)           // /messages
-							  .path(Long.toString(message.getId()))  // /{messageId}                            
-							  .build()
-							  .toString();
+		message.addLink(getUriForSelf(uriInfo, message), "self");
+		message.addLink(getUriForProfile(uriInfo,message), "profile");
+		return messageService.getMessage(id);
+	}
+
+	private String getUriForProfile(UriInfo uriInfo, Message message) {
+		String uri=uriInfo.getBaseUriBuilder()                         // https:localhost:8080/messenger/webapi 
+				          .path(ProfileResource.class)                 // profiles
+				          .path(message.getAuthor())                   // {authorName}
+				          .build()
+		                  .toString();
+		return uri;
+	}
+	
+	private String getUriForSelf(UriInfo uriInfo, Message message) {
+		String uri=uriInfo.getBaseUriBuilder()                         // https:localhost:8080/messenger/webapi
+						  .path(MessageResource.class)                 // /messages
+						  .path(Long.toString(message.getId()))        // /{messageId}                            
+						  .build()
+						  .toString();
+		return uri;
 		
-				message.addLink(uri, "self");
-				return messageService.getMessage(id);
+				
 	}
 	
 	// We don't have to mention http method name here
